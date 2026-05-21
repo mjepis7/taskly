@@ -14,8 +14,7 @@ Desenvolvido durante o programa trainee da ICMC Jr. 🚀
 
 ## Tecnologias utilizadas ⚙️
 
-- [React Native](https://reactnative.dev/)
-- [Expo](https://docs.expo.dev/)
+- [ReactJS](https://react.dev/)
 - [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
 ## Estrutura do projeto 🌳
@@ -40,10 +39,5 @@ $ cd frontend
 $ npm install
 
 # inicie o projeto
-$ npx expo start
+$ npm run dev
 ```
-
-Depois disso:
-
-- pressione **w** no terminal para abrir no navegador
-- ou escaneie o **QR Code** usando o **Expo Go** no celular
