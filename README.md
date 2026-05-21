@@ -14,8 +14,7 @@ Desenvolvido durante o programa trainee da ICMC Jr. 🚀
 
 ## Tecnologias utilizadas ⚙️
 
-- [React Native](https://reactnative.dev/)
-- [Expo](https://docs.expo.dev/)
+- [ReactJS](https://react.dev/learn)
 - [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
 ## Estrutura do projeto 🌳
