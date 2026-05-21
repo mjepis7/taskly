@@ -40,7 +40,7 @@ $ cd frontend
 $ npm install
 
 # inicie o projeto
-$ npx expo start
+$ npm run dev
 ```
 
 Depois disso:
