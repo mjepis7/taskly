@@ -1,53 +1,67 @@
+/* CAIXA MÃE: Ocupa a tela toda e centraliza tudo no meio exato */
 .welcome-container {
   background-color: #0F111A;
   min-height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center;      /* Centraliza pros lados */
+  justify-content: center;  /* Centraliza pra cima/baixo */
   color: #FFFFFF;
-  text-align: center;
+  font-family: sans-serif;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 40px;
+/* TÍTULO */
+.welcome-container h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.2;
 }
 
+/* IMAGEM DO CELULAR */
 .hero-img {
-  width: 160px;
-  margin-bottom: 40px;
+  max-height: 45vh;
+  width: auto;
+  margin-bottom: 24px;
 }
 
-.subtitle {
-  color: #A1A1AA;
-  font-size: 14px;
+/* SUBTÍTULO */
+.welcome-container p {
+  text-align: center;
+  color: #A0A0A0;
+  font-size: 16px;
+  margin-bottom: 32px;
+  max-width: 400px;
   line-height: 1.5;
-  margin-bottom: 50px;
 }
 
-.button-group {
+/* CAIXA DOS BOTÕES: Empilha um em cima do outro */
+.buttons-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 280px;
+  max-width: 300px;
 }
 
-.btn-primary {
+/* ESTILO DOS BOTÕES */
+.buttons-container button {
   background: linear-gradient(90deg, #10E196 0%, #2940FF 100%);
   color: white;
   border: none;
   padding: 16px;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  width: 100%;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.btn-primary:hover {
-  opacity: 0.8;
+.buttons-container button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }

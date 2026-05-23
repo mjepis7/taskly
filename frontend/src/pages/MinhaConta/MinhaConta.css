@@ -1,0 +1,152 @@
+/* CONTAINER GERAL */
+.minha-conta-web-container {
+  background-color: #0F111A;
+  min-height: 100vh;
+  width: 100vw;
+  font-family: sans-serif;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ============================ */
+/* CABEÇALHO                    */
+/* ============================ */
+.conta-header {
+  background: linear-gradient(90deg, #10E196 0%, #2940FF 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.conta-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover {
+  transform: translateX(-3px);
+}
+
+.back-btn img {
+  width: 28px;
+  filter: brightness(0) invert(1); /* Deixa a setinha branca caso ela seja preta */
+}
+
+.header-spacer {
+  width: 28px; /* Tem o mesmo tamanho do botão de voltar para equilibrar o centro */
+}
+
+/* ============================ */
+/* ÁREA DO FORMULÁRIO           */
+/* ============================ */
+.conta-form-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centraliza verticalmente no monitor */
+  padding: 40px 20px;
+}
+
+.conta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 450px; /* Largura ideal para formulários no PC */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #E0E0E0;
+}
+
+.input-group input {
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 16px;
+  color: #333333;
+  font-size: 15px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  transition: box-shadow 0.2s ease;
+}
+
+.input-group input:focus {
+  box-shadow: 0 0 0 2px #2940FF; /* Borda de foco elegante */
+}
+
+/* ============================ */
+/* BOTÕES                       */
+/* ============================ */
+.conta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.btn-salvar {
+  background: linear-gradient(90deg, #10E196 0%, #2940FF 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-salvar:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.btn-excluir {
+  background-color: #FF0000;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-excluir:hover {
+  transform: translateY(-2px);
+  background-color: #CC0000; /* Vermelho mais escuro no hover */
+}

@@ -1,0 +1,220 @@
+/* CONTAINER PRINCIPAL DA TELA INTEIRA */
+.new-task-web-container {
+  background-color: #0F111A; /* Fundo escuro do app */
+  min-height: 100vh;
+  width: 100vw;
+  font-family: sans-serif;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================ */
+/* CABEÇALHO FULL-WIDTH         */
+/* ============================ */
+.dash-header {
+  background: linear-gradient(90deg, #10E196 0%, #2940FF 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px; /* Respiro nas laterais no PC */
+  height: 70px; /* Altura encolhida para caber na tela */
+  width: 100%;
+}
+
+.user-greeting p { 
+  margin: 0; 
+  font-size: 16px; 
+  color: #E0E0E0; 
+}
+
+.user-greeting h1 { 
+  margin: 0; 
+  font-size: 26px; 
+  font-weight: bold; 
+  color: white; 
+}
+
+/* CORREÇÃO DO BOTÃO DE PERFIL (Fundo degradê e ícone centralizado) */
+.profile-btn {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #10E196, #2940FF);
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.profile-btn:hover {
+  transform: scale(1.05); /* Efeitinho ao passar o mouse */
+}
+
+.profile-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============================ */
+/* ÁREA CENTRAL DO FORMULÁRIO   */
+/* ============================ */
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 40px; /* Reduzi o padding vertical para não criar rolagem */
+  flex: 1;
+  justify-content: center; /* Centraliza o formulário verticalmente no espaço restante */
+}
+
+/* Título da Página (WIDER WEB STYLE) */
+.form-intro { 
+  margin-bottom: 24px; 
+  text-align: left; 
+  max-width: 600px; 
+  margin-left: auto; 
+  margin-right: auto; 
+  width: 100%; 
+}
+
+.form-intro h1 { 
+  font-size: 24px; 
+  margin-bottom: 6px; 
+}
+
+.form-intro p { 
+  color: #A0A0A0; 
+  font-size: 14px; 
+  margin: 0; 
+}
+
+/* O CONTAINER DO FORMULÁRIO (Foco no PC) */
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaçamento ajustado para caber tudo */
+  width: 100%;
+  max-width: 600px; /* Impede que os campos estiquem infinitamente */
+  margin: 0 auto; /* Centraliza a caixa no meio do monitor */
+}
+
+.form-group-block { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
+
+.form-group-block label { 
+  font-size: 12px; 
+  font-weight: bold; 
+  color: #A0A0A0; 
+  text-transform: uppercase; 
+}
+
+/* ============================ */
+/* QUADRADOS BRANCOS (INPUTS)   */
+/* ============================ */
+.task-form input,
+.task-form textarea {
+  background-color: #FFFFFF; /* Fundo branco */
+  border: none; 
+  border-radius: 8px;
+  padding: 12px;
+  color: #333333; /* Texto escuro */
+  font-size: 14px;
+  outline: none;
+}
+
+.task-form textarea { 
+  resize: none; /* Impede que o usuário quebre o layout puxando a caixa */ 
+}
+
+/* DATA E HORA LADO A LADO */
+.deadline-row { 
+  display: flex; 
+  gap: 16px; 
+}
+
+.deadline-group { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
+
+.deadline-group label { 
+  font-size: 12px; 
+  font-weight: bold; 
+  color: #A0A0A0; 
+}
+
+.input-icon-wrapper { 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+}
+
+/* ESTILO DO ÍCONE .PNG REAL DENTRO DO INPUT BRANCO */
+.input-icon-img {
+  position: absolute;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.6; /* Ícone levemente transparente */
+}
+
+.input-icon-wrapper input {
+  width: 100%;
+  padding-left: 36px; /* Espaço extra na esquerda para o ícone não cobrir o texto */
+}
+
+/* SELEÇÃO DE CORES (DO FIGMA) */
+.color-select-section { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.color-select-section label { 
+  font-size: 12px; 
+  font-weight: bold; 
+  color: #A0A0A0; 
+}
+
+.color-options { 
+  display: flex; 
+  gap: 12px; 
+}
+
+.color-dot {
+  width: 24px; 
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent; 
+}
+
+.color-dot:hover { 
+  border-color: #A0A0A0; /* Efeito de seleção na cor */ 
+}
+
+/* BOTÃO CRIAR */
+.btn-criar {
+  background: linear-gradient(90deg, #10E196 0%, #2940FF 100%);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.2s ease;
+}
+
+.btn-criar:hover { 
+  transform: translateY(-2px); 
+}
