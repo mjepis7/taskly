@@ -1,4 +1,3 @@
-
 import './Dashboard.css';
 
 // Importando todos os arquivos .png da pasta assets
