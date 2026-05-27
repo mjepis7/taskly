@@ -1,0 +1,32 @@
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  gap: 8px;
+}
+
+.input-field label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.input-field input {
+  padding: 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f5f6fa;
+  font-size: 14px;
+  color: #333333;
+}
+
+.input-field input::placeholder {
+  color: #a0a0a0;
+}
+
+.error-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: red;
+}

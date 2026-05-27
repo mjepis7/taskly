@@ -1,0 +1,68 @@
+.filter-modal {
+  background: white;
+  width: 320px;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+.filter-item.active {
+  background: #d2cfcf;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.filter-header button {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #f1f5ff;
+  color: #2940ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.filter-header button:hover {
+  background: #e6ecff;
+  transform: scale(1.05);
+}
+
+.filter-header button:active {
+  transform: scale(0.95);
+}
