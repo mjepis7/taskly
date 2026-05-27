@@ -1,44 +1,61 @@
 # Taskly 📋
 
-Um aplicativo mobile de gerenciamento de tarefas desenvolvido com **React Native** e **Expo**.
-O projeto tem como objetivo ajudar usuários a organizar tarefas, acompanhar atividades e melhorar a produtividade de forma simples e intuitiva.
+Sistema de gerenciamento de tarefas desenvolvido com **React + Vite**.
 
-Desenvolvido durante o programa trainee da ICMC Jr. 🚀
+O projeto tem como objetivo ajudar usuários a organizar tarefas, acompanhar atividades e melhorar a produtividade através de uma interface simples, moderna e responsiva.
 
-## Funcionalidades 🧩
+Desenvolvido durante o programa trainee da ICMC Jr.
 
-- Criação e gerenciamento de tarefas
-- Organização de atividades
-- Interface mobile intuitiva
-- Navegação entre telas
+## 🎨 Protótipo no Figma
 
-## Tecnologias utilizadas ⚙️
+Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/design/Txe953AxhH7ALnScyWS7jA/Projeto-EJ?node-id=0-1&t=lnUopxMDIJufC7iz-1).
 
-- [ReactJS](https://react.dev/)
-- [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+---
 
-## Estrutura do projeto 🌳
+# 🚧 Status do projeto
+
+Atualmente o projeto possui apenas o frontend implementado.
+
+O backend e integração com API poderão ser adicionados futuramente.
+
+---
+
+# 🧩 Funcionalidades
+
+- Criação de tarefas
+- Edição de tarefas
+- Exclusão de tarefas
+- Filtro por status
+- Busca de tarefas
+- Gerenciamento de perfil
+- Interface responsiva
+
+---
+
+# ⚙️ Tecnologias utilizadas
+
+- React
+- Vite
+- React Router DOM
+- JavaScript
+- CSS
+- Phosphor Icons
+- LocalStorage
+
+---
+
+# 💻 Como rodar o projeto localmente
 
 ```bash
-frontend/
-backend/
-docs/
-```
+# clonar o repositório
+git clone https://github.com/mjepis7/taskly.git
 
-## Como rodar o projeto localmente 📱
+# entrar na pasta frontend
+cd frontend
 
-Certifique-se de ter o `Node.js` instalado antes de começar:
+# instalar dependências
+npm install
 
-```bash
-# clone o projeto
-$ git clone https://github.com/mjepis7/taskly.git
-
-# entre na pasta frontend
-$ cd frontend
-
-# instale as dependências
-$ npm install
-
-# inicie o projeto
-$ npm run dev
+# iniciar ambiente de desenvolvimento
+npm run dev
 ```
