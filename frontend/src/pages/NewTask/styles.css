@@ -1,0 +1,231 @@
+.new-task-container {
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.new-task-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.new-task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-greeting p {
+  margin: 0;
+  font-size: 18px;
+}
+
+.user-greeting h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.profile-btn {
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10e196, #2940ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profile-btn:hover {
+  transform: scale(1.05);
+}
+
+.new-task-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.form-intro {
+  width: 100%;
+  max-width: 650px;
+  text-align: left;
+}
+
+.form-intro h2 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  font-weight: 700;
+  color: white;
+}
+
+.form-intro p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 16px;
+}
+
+.new-task-form {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.textarea-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textarea-group label,
+.date-time-field label,
+.colors-section label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.textarea-group textarea {
+  width: 100%;
+  min-height: 140px;
+  border: none;
+  border-radius: 14px;
+  background: white;
+  padding: 16px;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.textarea-group textarea:focus {
+  box-shadow: 0 0 0 2px #2940ff33;
+}
+
+.date-time-row {
+  display: flex;
+  gap: 16px;
+}
+
+.date-time-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.date-time-input {
+  height: 56px;
+  background: white;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  color: #2940ff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.date-time-input:focus-within {
+  box-shadow: 0 0 0 2px #2940ff33;
+}
+
+.date-time-input input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+}
+
+.colors-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.color-options {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border 0.2s ease;
+  padding: 0;
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+}
+
+.color-dot.selected {
+  border-color: white;
+  transform: scale(1.2);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .new-task-container {
+    padding: 24px;
+  }
+
+  .form-intro h2 {
+    font-size: 30px;
+  }
+
+  .date-time-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .new-task-container {
+    padding: 20px 16px 100px;
+  }
+
+  .user-greeting h1 {
+    font-size: 28px;
+  }
+
+  .profile-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .form-intro h2 {
+    font-size: 28px;
+  }
+
+  .btn-minhas-tarefas {
+    display: none;
+  }
+}

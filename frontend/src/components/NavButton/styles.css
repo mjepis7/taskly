@@ -1,0 +1,25 @@
+.btn-nav {
+  background: white;
+  color: #2940ff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.btn-nav:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .btn-nav {
+    display: none;
+  }
+}

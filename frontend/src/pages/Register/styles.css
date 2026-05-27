@@ -1,32 +1,33 @@
-.login {
+.register {
   min-height: 100vh;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
-.login-header {
-  height: 72px;
+.register-header {
+  height: 80px;
+  padding: 0 40px;
 
   display: flex;
   align-items: center;
 
-  padding: 0 20px;
+  position: relative;
 
   background: linear-gradient(90deg, #10e196 0%, #2940ff 100%);
 }
 
-.login-title {
+.register-title {
   flex: 1;
 
-  margin-right: 32px;
+  margin: 0;
 
   text-align: center;
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 24px;
 }
 
-.login-form {
+.register-form {
   width: 100%;
   max-width: 420px;
 
@@ -38,8 +39,10 @@
   gap: 24px;
 }
 
-.login-error {
-  color: #ff4d4f;
-  font-size: 0.875rem;
+.register-error {
+  color: #ff4d4d;
+  font-size: 14px;
   text-align: center;
+  max-width: 100%;
+  word-break: break-word;
 }
