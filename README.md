@@ -22,6 +22,7 @@ Desenvolvido durante o programa trainee da ICMC Jr. 🚀
 ```bash
 frontend/
 backend/
+docs/
 ```
 
 ## Como rodar o projeto localmente 📱
