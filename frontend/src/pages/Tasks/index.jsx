@@ -41,11 +41,14 @@ export function Tasks() {
     confirmDelete
   } = useTasks()
 
+  // 1. BUSCAMOS O NOME SALVO NO NAVEGADOR AQUI
+  const nomeUsuario = localStorage.getItem('userName') || 'Usuário'
+
   return (
     <div className="task-web-container">
       <div className="task-content">
         <Header
-          userName="João"
+          userName={nomeUsuario} // 2. NOME DINÂMICO APLICADO AQUI
           buttonTo="/novatarefa"
           buttonText="+ Nova tarefa"
         />

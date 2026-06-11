@@ -22,6 +22,9 @@ const statusOptions = [
 export function NewTask() {
   const navigate = useNavigate()
 
+  // 1. BUSCAMOS O NOME SALVO NO NAVEGADOR AQUI
+  const nomeUsuario = localStorage.getItem('userName') || 'Usuário'
+
   const { formData, errors, handleChange, handleSubmit, setFormData } = useForm(
     {
       initialValues: {
@@ -83,7 +86,7 @@ export function NewTask() {
     <div className="new-task-container">
       <div className="new-task-content">
         <Header
-          userName="João"
+          userName={nomeUsuario} // 2. NOME DINÂMICO APLICADO AQUI
           buttonTo="/tarefas"
           buttonText="Minhas tarefas"
         />
