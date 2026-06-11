@@ -45,6 +45,9 @@ export function Login() {
         // Guarda o Token devolvido pelo back-end no "cofre" do navegador
         localStorage.setItem('token', response.data.token)
         
+        // Guarda o Nome do usuário para usar no cabeçalho
+        localStorage.setItem('userName', response.data.nome || response.data.name || 'Usuário')
+        
         // Se tudo deu certo, libera a entrada e vai para a tela de tarefas
         navigate('/tarefas')
         
