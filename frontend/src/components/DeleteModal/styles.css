@@ -1,0 +1,158 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 999;
+}
+
+.delete-modal {
+  width: 100%;
+  max-width: 320px;
+
+  background: #f5f5f7;
+
+  border: 2px solid #7b2cff;
+  border-radius: 24px;
+
+  padding: 32px 28px;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 28px;
+
+  box-sizing: border-box;
+}
+
+.delete-close-btn {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #f1f5ff;
+  color: #2940ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.delete-close-btn:hover {
+  background: #e6ecff;
+  transform: scale(1.08);
+}
+
+.delete-close-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-icon {
+  margin-top: 12px;
+
+  color: #3d7cff;
+}
+
+.delete-modal h2 {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 20px;
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  color: #1f2937;
+}
+
+.modal-actions {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+
+  margin-top: 10px;
+}
+
+/* BOTÕES */
+.btn-cancel,
+.btn-delete {
+  flex: 1;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 14px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.btn-cancel {
+  background: white;
+
+  border: 2px solid #ff0066;
+
+  color: #ff0066;
+}
+
+/* DELETAR */
+.btn-delete {
+  background: #ff0066;
+  color: white;
+}
+
+.btn-cancel:hover,
+.btn-delete:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.btn-cancel:active,
+.btn-delete:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 480px) {
+  .delete-modal {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .delete-modal h2 {
+    font-size: 18px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+}

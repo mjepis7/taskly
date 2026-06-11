@@ -1,0 +1,119 @@
+.profile-container {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-bottom: 40px;
+
+  box-sizing: border-box;
+}
+
+.profile-header {
+  height: 72px;
+
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(90deg, #10e196 0%, #2940ff 100%);
+}
+
+.profile-header h2 {
+  flex: 1;
+
+  margin: 0;
+  margin-right: 24px;
+
+  text-align: center;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: white;
+}
+
+.header-spacer {
+  width: 24px;
+}
+
+.profile-form-wrapper {
+  flex: 1;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 48px 24px;
+
+  box-sizing: border-box;
+}
+
+.profile-form {
+  width: 100%;
+  max-width: 420px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin-top: 8px;
+}
+
+.delete-account-btn {
+  background: #ff3366 !important;
+}
+
+.delete-account-btn:hover {
+  filter: brightness(0.95);
+}
+
+@media (max-width: 768px) {
+  .profile-form-wrapper {
+    padding: 36px 20px;
+  }
+
+  .profile-form {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding-bottom: 24px;
+  }
+
+  .profile-header {
+    height: 68px;
+    padding: 0 16px;
+  }
+
+  .profile-header h2 {
+    font-size: 16px;
+  }
+
+  .profile-form-wrapper {
+    padding: 28px 16px;
+  }
+
+  .profile-form {
+    gap: 18px;
+  }
+
+  .input-group input {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .profile-actions {
+    margin-top: 4px;
+  }
+}
