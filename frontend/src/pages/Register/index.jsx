@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+
 import { useForm } from '../../hooks/useForm'
 
 import {
@@ -16,9 +18,14 @@ import {
 import { formatCpf } from '../../utils/formatters'
 import { errors as errorMessages } from '../../utils/errors'
 
+import api from '../../api'
+
 import './styles.css'
 
 export function Register() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const navigate = useNavigate()
 
   const { formData, errors, handleChange, handleSubmit } = useForm({
@@ -32,7 +39,7 @@ export function Register() {
       cpf: {
         required: errorMessages.requiredCpf,
         mask: formatCpf,
-        validate: value => validateCpf(value.replace(/\D/g, '')),
+        validate: value => validateCpf(value.replace(/\D/g, '')), // valida só dígitos
         invalid: errorMessages.invalidCpf
       },
 
@@ -55,9 +62,30 @@ export function Register() {
       }
     },
 
-    onSuccess: data => {
-      localStorage.setItem('userName', data.name)
-      navigate('/tarefas')
+    onSuccess: async (data) => {
+      setIsLoading(true)
+      setErrorMessage('')
+
+      try {
+        await api.post('/auth/register', {
+          nome: data.name,
+          cpf: data.cpf,
+          dataNascimento: data.birthDate,
+          email: data.email,
+          senha: data.password
+        })
+
+        navigate('/login')
+      } catch (error) {
+        console.error(error)
+
+        setErrorMessage(
+          error.response?.data?.erro ||
+          'Erro ao realizar cadastro. Tente novamente.'
+        )
+      } finally {
+        setIsLoading(false)
+      }
     }
   })
 
@@ -112,7 +140,17 @@ export function Register() {
           error={errors.password}
         />
 
-        <Button type="submit">Cadastrar</Button>
+        {errorMessage && (
+          <p className="register-error">{errorMessage}</p>
+        )}
+
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+        </Button>
+
+        <p className="register-redirect">
+          Já possui uma conta? <Link to="/login">Entrar</Link>
+        </p>
       </form>
     </main>
   )

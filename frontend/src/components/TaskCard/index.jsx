@@ -6,35 +6,30 @@ import {
 } from '@phosphor-icons/react'
 
 import { formatDate } from '../../utils/formatters'
+import { STATUS_COLORS, TASK_STATUS } from '../../utils/status'
 
 import './styles.css'
 
 export function TaskCard({ task, onEdit, onDelete }) {
-  function getStatusColor(status) {
-    switch (status) {
-      case 'Concluído':
-        return '#10E196'
-      case 'Atrasado':
-        return '#FF3366'
-      default:
-        return '#FFB800'
-    }
-  }
+  // Status exibido = status efetivo (inclui "Atrasado" derivado)
+  const status = task.displayStatus || task.status
+  const statusColor = STATUS_COLORS[status] || STATUS_COLORS[TASK_STATUS.DOING]
+  const isDone = status === TASK_STATUS.DONE
 
   return (
-    <div className="task-card">
+    <div className={`task-card ${isDone ? 'is-done' : ''}`}>
       <div className="card-top">
         <div
           className="color-dot"
           style={{
-            backgroundColor: getStatusColor(task.status)
+            backgroundColor: statusColor
           }}
         />
 
         <div>
           <h3 className="task-title">{task.title}</h3>
 
-          <p className="task-status">{task.status}</p>
+          <p className="task-status">{status}</p>
         </div>
       </div>
 
@@ -43,23 +38,21 @@ export function TaskCard({ task, onEdit, onDelete }) {
       <div className="card-details">
         <span>
           <CalendarBlankIcon size={20} weight="bold" />
-
           {formatDate(task.date)}
         </span>
 
         <span>
           <ClockIcon size={20} weight="bold" />
-
           {task.time}
         </span>
       </div>
 
       <div className="card-actions">
-        <button onClick={() => onEdit && onEdit(task)}>
+        <button onClick={() => onEdit?.(task)}>
           <PencilSimpleIcon size={20} weight="bold" />
         </button>
 
-        <button onClick={() => onDelete && onDelete(task)}>
+        <button onClick={() => onDelete?.(task)}>
           <TrashIcon size={20} weight="bold" />
         </button>
       </div>

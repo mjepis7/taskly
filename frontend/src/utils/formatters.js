@@ -15,16 +15,10 @@ export function formatCpf(value) {
   )
 }
 
-export function formatDateInput(value) {
-  const digits = value.replace(/\D/g, '').slice(0, 8)
-
-  return digits.replace(/(\d{2})(\d)/, '$1/$2').replace(/(\d{2})(\d)/, '$1/$2')
-}
-
 export function formatDate(date) {
   if (!date) return ''
 
-  const [year, month, day] = date.split('-')
+  const [year, month, day] = date.split('T')[0].split('-')
 
   return `${day}/${month}/${year}`
 }

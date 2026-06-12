@@ -187,6 +187,13 @@
   display: none;
 }
 
+.tasks-error {
+  color: #ff4d4f;
+  text-align: center;
+  margin: 16px 0;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 768px) {
   .task-web-container {
     padding: 24px;

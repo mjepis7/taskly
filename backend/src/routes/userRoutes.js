@@ -1,0 +1,76 @@
+const express = require('express')
+const router = express.Router()
+
+const User = require('../models/User')
+const authMiddleware = require('../middlewares/authMiddleware')
+
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.usuario.id).select('-senha')
+
+    if (!user) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' })
+    }
+
+    return res.json(user)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ erro: 'Erro ao buscar usuário' })
+  }
+})
+
+router.put('/me', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.usuario.id
+
+    const { nome, cpf, dataNascimento, email } = req.body
+
+    // Monta apenas os campos enviados, normalizando o CPF (remove máscara)
+    const dadosAtualizados = {}
+    if (nome !== undefined) dadosAtualizados.nome = nome
+    if (email !== undefined) dadosAtualizados.email = email
+    if (dataNascimento !== undefined) dadosAtualizados.dataNascimento = dataNascimento
+    if (cpf !== undefined) dadosAtualizados.cpf = cpf.replace(/\D/g, '')
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      dadosAtualizados,
+      {
+        new: true,
+        runValidators: true
+      }
+    ).select('-senha')
+
+    if (!updatedUser) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' })
+    }
+
+    return res.json(updatedUser)
+  } catch (error) {
+    console.error(error)
+
+    // Conflito de índice único (e-mail ou CPF já em uso)
+    if (error.code === 11000) {
+      return res.status(400).json({ erro: 'E-mail ou CPF já cadastrado.' })
+    }
+
+    return res.status(500).json({ erro: 'Erro ao atualizar usuário' })
+  }
+})
+
+router.delete('/me', authMiddleware, async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.usuario.id)
+
+    if (!deletedUser) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' })
+    }
+
+    return res.json({ mensagem: 'Conta deletada com sucesso' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ erro: 'Erro ao deletar conta' })
+  }
+})
+
+module.exports = router

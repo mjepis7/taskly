@@ -43,3 +43,18 @@
   font-size: 0.875rem;
   text-align: center;
 }
+
+.login-redirect {
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.login-redirect a {
+  color: #10e196;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-redirect a:hover {
+  text-decoration: underline;
+}

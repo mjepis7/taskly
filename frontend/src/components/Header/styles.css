@@ -16,3 +16,15 @@
 .profile-btn:hover {
   transform: scale(1.05);
 }
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  margin-left: 8px;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
+}

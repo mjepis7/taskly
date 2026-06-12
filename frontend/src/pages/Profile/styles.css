@@ -76,6 +76,26 @@
   filter: brightness(0.95);
 }
 
+.success-message,
+.error-message {
+  text-align: center;
+  width: 100%;
+}
+
+.success-message {
+  color: #10e196;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.error-message {
+  color: #ff3366;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
 @media (max-width: 768px) {
   .profile-form-wrapper {
     padding: 36px 20px;

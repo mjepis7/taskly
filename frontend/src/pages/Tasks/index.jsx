@@ -13,8 +13,10 @@ import './styles.css'
 
 export function Tasks() {
   const {
-    tasks,
     filteredTasks,
+
+    isLoading,
+    errorMessage,
 
     search,
     setSearch,
@@ -23,7 +25,6 @@ export function Tasks() {
     setStatusFilter,
 
     selectedTask,
-    setSelectedTask,
 
     isEditOpen,
     setIsEditOpen,
@@ -41,27 +42,48 @@ export function Tasks() {
     confirmDelete
   } = useTasks()
 
+  const nomeUsuario = localStorage.getItem('userName') || 'Usuário'
+
+  if (isLoading) {
+    return (
+      <div className="task-web-container">
+        <p className="empty-message">Carregando tarefas...</p>
+      </div>
+    )
+  }
+
+  const isFiltering = Boolean(search || statusFilter)
+
   return (
     <div className="task-web-container">
       <div className="task-content">
+
         <Header
-          userName="João"
-          buttonTo="/novatarefa"
+          userName={nomeUsuario}
+          buttonTo="/new-task"
           buttonText="+ Nova tarefa"
         />
+
+        {errorMessage && (
+          <p className="tasks-error">{errorMessage}</p>
+        )}
 
         <section className="controls-section">
           <div className="search-box">
             <MagnifyingGlassIcon size={20} />
 
             <input
+              type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Procure uma tarefa"
             />
           </div>
 
-          <button className="btn-filter" onClick={() => setIsFilterOpen(true)}>
+          <button
+            className="btn-filter"
+            onClick={() => setIsFilterOpen(true)}
+          >
             <SlidersIcon size={20} />
           </button>
         </section>
@@ -70,16 +92,18 @@ export function Tasks() {
           {filteredTasks.length > 0 ? (
             filteredTasks.map(task => (
               <TaskCard
-                key={task.id}
+                key={task._id || task.id}
                 task={task}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             ))
-          ) : tasks.length === 0 ? (
-            <p className="empty-message">Nenhuma tarefa cadastrada.</p>
           ) : (
-            <p className="empty-message">Nenhuma tarefa encontrada.</p>
+            <p className="empty-message">
+              {isFiltering
+                ? 'Nenhuma tarefa encontrada com os filtros aplicados.'
+                : 'Nenhuma tarefa cadastrada.'}
+            </p>
           )}
         </main>
       </div>
@@ -89,7 +113,6 @@ export function Tasks() {
       <EditTaskModal
         isOpen={isEditOpen}
         task={selectedTask}
-        setTask={setSelectedTask}
         onClose={() => setIsEditOpen(false)}
         onConfirm={confirmEdit}
       />

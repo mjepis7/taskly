@@ -24,6 +24,16 @@
   transform: translateY(-5px);
 }
 
+/* Tarefa concluída: texto riscado e levemente esmaecida */
+.task-card.is-done {
+  opacity: 0.7;
+}
+
+.task-card.is-done .task-title,
+.task-card.is-done .task-desc {
+  text-decoration: line-through;
+}
+
 .card-top {
   display: flex;
   align-items: flex-start;
