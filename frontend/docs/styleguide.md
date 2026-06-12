@@ -47,4 +47,3 @@ Definidas em `src/utils/status.js` (`STATUS_COLORS`):
 - **Botão desabilitado:** `opacity: 0.5` + `cursor: not-allowed` (definido globalmente em `index.css`).
 - **Status "Atrasado":** aplicado automaticamente quando a data/hora vence (apenas visual).
 
-> Capturas de tela podem ser adicionadas aqui futuramente. O layout de referência está no [Figma](https://www.figma.com/design/Txe953AxhH7ALnScyWS7jA/Projeto-EJ?node-id=0-1&t=lnUopxMDIJufC7iz-1).

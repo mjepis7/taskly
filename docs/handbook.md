@@ -12,8 +12,6 @@ Padrões adotados no Taskly. O objetivo é manter o código consistente entre fr
 - **Constantes compartilhadas:** UPPER_SNAKE_CASE (`TASK_STATUS`, `STATUS_OPTIONS`).
 - **Back-end:** controllers/rotas/models em camelCase; models exportados em `PascalCase` (`User`, `Task`).
 
-> Observação: o código mistura termos em PT e EN (ex.: `usuario`/`nome` no back, `title`/`status` nas tarefas). Ao criar código novo, siga o padrão do arquivo que você está editando.
-
 ## Estilização
 
 - **Front:** CSS puro, um `styles.css` por componente/página (sem Tailwind ou libs de UI).

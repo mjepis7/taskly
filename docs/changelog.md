@@ -1,6 +1,6 @@
 # Changelog
 
-Histórico de entregas do Taskly. As versões seguem [SemVer](https://semver.org/lang/pt-BR/).
+Histórico de entregas do Taskly. 
 
 ## [v1.0.1] – 2026-06-12
 ### Ajustes de integração e correções

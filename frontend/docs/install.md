@@ -36,5 +36,3 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/api',
 })
 ```
-
-> Para apontar para outro back-end (ex.: produção), altere o `baseURL`. Como evolução, recomenda-se extrair esse valor para uma variável `VITE_API_URL` em um `.env` e ler via `import.meta.env`.

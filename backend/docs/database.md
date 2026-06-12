@@ -58,8 +58,6 @@ Schema definido em `src/models/Task.js`.
 }
 ```
 
-> Embora o enum aceite `Atrasado` (compatibilidade), a aplicação grava apenas `Em andamento` e `Concluído`. O `Atrasado` é derivado no front-end.
-
 ## Índices e relações
 
 - **Índices únicos:** `email` e `cpf` (criados automaticamente pelo `unique: true`).

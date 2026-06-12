@@ -31,7 +31,6 @@ Cria um novo usuário.
   "senha": "12345678"
 }
 ```
-> O CPF pode ser enviado com ou sem máscara — o back normaliza para 11 dígitos.
 
 **Response 201:**
 ```json
@@ -146,8 +145,6 @@ Remove uma tarefa do usuário logado.
 ```
 **Erros:** `404` se não existir, `401` se a tarefa não for do usuário.
 
-> 🔒 = exige `Authorization: Bearer <token>`.
-
 ## Modelos
 
 ### User
@@ -170,8 +167,6 @@ Remove uma tarefa do usuário logado.
 | `status`    | String   | `Em andamento` ou `Concluído` (`Atrasado` é derivado)  |
 | `usuario`   | ObjectId | referência ao `User` dono                              |
 | `createdAt` / `updatedAt` | Date | gerados automaticamente (`timestamps`)    |
-
-> O status `Atrasado` é calculado no front a partir da data/hora vencida e **não** é gravado pela API.
 
 ## Códigos de erro
 

@@ -63,8 +63,6 @@ components/
     └── styles.css     # estilos do componente
 ```
 
-> O guia de documentação sugere arquivos `.tsx` e `*.test.tsx`. Este projeto usa **JavaScript (`.jsx`)** e ainda **não possui testes** (ver [testing.md](./testing.md)).
-
 ## Páginas e rotas
 
 | Rota          | Página     | Acesso    |
