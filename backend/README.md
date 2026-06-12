@@ -4,10 +4,6 @@ Esta é a API do Taskly, um aplicativo de gerenciamento de tarefas. O backend fo
 
 Desenvolvido durante o programa trainee da ICMC Jr. 🚀
 
-## Protótipo no Figma 🎨
-
-Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/design/Txe953AxhH7ALnScyWS7jA/Projeto-EJ?node-id=0-1&t=lnUopxMDIJufC7iz-1).
-
 ## Funcionalidades 🧩
 
 ### Autenticação 🔐
@@ -75,7 +71,7 @@ PORT=3000
 npm run dev
 ```
 
-#### Frontend roda em:
+#### Backend roda em:
 ```bash
 http://localhost:3000
 ```
