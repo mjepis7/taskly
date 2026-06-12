@@ -1,93 +1,150 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import api from '../../api'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { DeleteModal } from '../../components/DeleteModal'
 
+import { formatCpf } from '../../utils/formatters'
+
 import './styles.css'
 
 export function Profile() {
-  const [cpf, setCpf] = useState('')
-  const [data, setData] = useState('')
+  const [form, setForm] = useState({
+    nome: '',
+    cpf: '',
+    dataNascimento: '',
+    email: ''
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [loadingDelete, setLoadingDelete] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  function handleCpf(e) {
-    let valor = e.target.value.replace(/\D/g, '')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
-    if (valor.length > 11) {
-      valor = valor.slice(0, 11)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        setError('')
+        setSuccess('')
+
+        const res = await api.get('/user/me')
+
+        setForm({
+          nome: res.data.nome || '',
+          cpf: res.data.cpf || '',
+          dataNascimento: res.data.dataNascimento?.split('T')[0] || '',
+          email: res.data.email || ''
+        })
+      } catch (err) {
+        console.error(err)
+        setError('Erro ao carregar dados do usuário.')
+      }
     }
 
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2')
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2')
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+    loadUser()
+  }, [])
 
-    setCpf(valor)
+  function handleChange(e) {
+    const { name, value } = e.target
+
+    let finalValue = value
+
+    if (name === 'cpf') {
+      finalValue = formatCpf(value)
+    }
+
+    setForm(prev => ({
+      ...prev,
+      [name]: finalValue
+    }))
   }
 
-  function handleData(e) {
-    let valor = e.target.value.replace(/\D/g, '')
-
-    if (valor.length > 8) {
-      valor = valor.slice(0, 8)
-    }
-
-    if (valor.length > 4) {
-      valor = `${valor.slice(0, 2)}/${valor.slice(2, 4)}/${valor.slice(4)}`
-    } else if (valor.length > 2) {
-      valor = `${valor.slice(0, 2)}/${valor.slice(2)}`
-    }
-
-    setData(valor)
-  }
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
+    setLoading(true)
 
-    alert('Alterações salvas com sucesso!')
+    setError('')
+    setSuccess('')
+
+    try {
+      await api.put('/user/me', form)
+      localStorage.setItem('userName', form.nome)
+
+      setSuccess('Perfil atualizado com sucesso!')
+    } catch (err) {
+      console.error(err)
+      setError('Erro ao atualizar perfil.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleDeleteAccount() {
+    try {
+      setLoadingDelete(true)
+
+      await api.delete('/user/me')
+
+      localStorage.removeItem('token')
+      localStorage.removeItem('userName')
+
+      navigate('/', { replace: true })
+    } catch (error) {
+      setError('Erro ao deletar conta.')
+    } finally {
+      setLoadingDelete(false)
+      setIsModalOpen(false)
+    }
   }
 
   return (
     <div className="profile-container">
       <header className="profile-header">
         <BackButton />
-
         <h2>MINHA CONTA</h2>
-
-        <div className="header-spacer"></div>
+        <div />
       </header>
 
       <main className="profile-form-wrapper">
         <form className="profile-form" onSubmit={handleSubmit}>
-          <Input label="Nome" type="text" placeholder="Digite seu nome" />
+          <Input name="nome" label="Nome" value={form.nome} onChange={handleChange} />
+          <Input name="cpf" label="CPF" value={form.cpf} onChange={handleChange} />
 
           <Input
-            label="CPF"
-            type="text"
-            placeholder="000.000.000-00"
-            value={cpf}
-            onChange={handleCpf}
-          />
-
-          <Input
+            name="dataNascimento"
             label="Data de nascimento"
-            type="text"
-            placeholder="00/00/0000"
-            value={data}
-            onChange={handleData}
+            type="date"
+            value={form.dataNascimento}
+            onChange={handleChange}
           />
 
-          <Input label="E-mail" type="email" placeholder="Digite seu e-mail" />
+          <Input
+            name="email"
+            label="E-mail"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-          <Input label="Senha" type="password" placeholder="Digite sua senha" />
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">{success}</p>}
 
           <div className="profile-actions">
-            <Button type="submit">Salvar alterações</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Salvando...' : 'Salvar alterações'}
+            </Button>
 
             <Button
-              style={{ background: 'red', marginTop: 10 }}
               type="button"
+              style={{ background: 'red', marginTop: 10 }}
               onClick={() => setIsModalOpen(true)}
             >
               Excluir conta
@@ -98,12 +155,9 @@ export function Profile() {
 
       <DeleteModal
         isOpen={isModalOpen}
-        title={'Deseja mesmo deletar sua conta?'}
+        title="Deseja mesmo deletar sua conta?"
         onClose={() => setIsModalOpen(false)}
-        onConfirm={() => {
-          alert('Conta deletada!')
-          setIsModalOpen(false)
-        }}
+        onConfirm={handleDeleteAccount}
       />
     </div>
   )

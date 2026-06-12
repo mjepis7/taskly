@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
@@ -7,15 +7,17 @@ import { Input } from '../../components/Input'
 import { useForm } from '../../hooks/useForm'
 
 import { validateEmail, validatePassword } from '../../utils/validations'
-
 import { errors as errorMessages } from '../../utils/errors'
 
-// 1. IMPORTAMOS O NOSSO CARTEIRO AQUI
 import api from '../../api'
 
 import './styles.css'
+import { useState } from 'react'
 
 export function Login() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [loginError, setLoginError] = useState('')
+
   const navigate = useNavigate()
 
   const { formData, errors, handleChange, handleSubmit } = useForm({
@@ -33,27 +35,34 @@ export function Login() {
       }
     },
 
-    // 2. CONECTAMOS COM O BACK-END AQUI NO "onSuccess"
+    // Executado apenas após validação do formulário
     onSuccess: async (data) => {
+      setIsLoading(true)
+      setLoginError('')
+
       try {
-        // Envia o e-mail e a senha para a rota de login
+        // Autentica usuário no backend
         const response = await api.post('/auth/login', {
           email: data.email,
-          senha: data.password // Traduzindo de 'password' (front) para 'senha' (back)
+          senha: data.password
         })
 
-        // Guarda o Token devolvido pelo back-end no "cofre" do navegador
+        // Limpa possíveis dados antigos de sessão
+        localStorage.removeItem('token')
+        localStorage.removeItem('userName')
+
+        // Salva nova sessão
         localStorage.setItem('token', response.data.token)
-        
-        // Guarda o Nome do usuário para usar no cabeçalho
-        localStorage.setItem('userName', response.data.nome || response.data.name || 'Usuário')
-        
-        // Se tudo deu certo, libera a entrada e vai para a tela de tarefas
-        navigate('/tarefas')
-        
+        localStorage.setItem('userName', response.data.user?.nome || 'Usuário')
+
+        // Redireciona para área logada
+        navigate('/tasks')
+
       } catch (error) {
         console.error(error)
-        alert('E-mail ou senha incorretos. Tente novamente!')
+        setLoginError('E-mail ou senha incorretos. Tente novamente.')
+      } finally {
+        setIsLoading(false)
       }
     }
   })
@@ -86,7 +95,17 @@ export function Login() {
           error={errors.password}
         />
 
-        <Button type="submit">Entrar</Button>
+        {loginError && (
+          <p className="login-error">{loginError}</p>
+        )}
+
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Entrando...' : 'Entrar'}
+        </Button>
+
+        <p className="login-redirect">
+          Não tem uma conta? <Link to="/register">Cadastre-se</Link>
+        </p>
       </form>
     </main>
   )

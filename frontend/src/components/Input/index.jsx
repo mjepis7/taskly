@@ -8,19 +8,24 @@ export function Input({
   value,
   onChange,
   style,
-  error
+  error,
+  disabled,
+  ...props
 }) {
   return (
     <div className="input-field" style={style}>
-      <label>{label}</label>
+      {label && <label htmlFor={name}>{label}</label>}
 
       <input
+        id={name}
         name={name}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={error ? 'input-error' : ''}
+        disabled={disabled}
+        className={`input ${error ? 'input-error' : ''}`}
+        {...props}
       />
 
       {error && <span className="error-text">{error}</span>}

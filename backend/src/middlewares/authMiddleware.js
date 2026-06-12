@@ -1,25 +1,42 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 
-module.exports = function (req, res, next) {
-  // Pega o token que vem no cabeçalho da requisição
-  const token = req.header('Authorization');
+module.exports = function authMiddleware(req, res, next) {
+  const authHeader = req.header('Authorization')
 
-  // Se não tiver token, barra o acesso
-  if (!token) {
-    return res.status(401).json({ erro: 'Acesso negado. Faça login para continuar.' });
+  if (!authHeader) {
+    return res.status(401).json({
+      erro: 'Acesso negado. Faça login para continuar.'
+    })
+  }
+
+  const parts = authHeader.split(' ')
+
+  if (parts.length !== 2) {
+    return res.status(401).json({
+      erro: 'Formato do token inválido.'
+    })
+  }
+
+  const [scheme, token] = parts
+
+  if (!/^Bearer$/i.test(scheme)) {
+    return res.status(401).json({
+      erro: 'Esquema de autenticação inválido.'
+    })
   }
 
   try {
-    // Tira a palavra "Bearer " se o front-end mandar junto
-    const tokenLimpo = token.replace('Bearer ', '');
-    
-    // Verifica se o token é válido usando o segredo do .env
-    const decodificado = jwt.verify(tokenLimpo, process.env.JWT_SECRET);
-    
-    // Guarda os dados do usuário na requisição para podermos usar depois
-    req.usuario = decodificado;
-    next(); // Deixa passar!
-  } catch (erro) {
-    res.status(400).json({ erro: 'Token inválido ou expirado.' });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    req.usuario = {
+      id: decoded.id || decoded._id,
+      email: decoded.email
+    }
+
+    return next()
+  } catch (error) {
+    return res.status(401).json({
+      erro: 'Token inválido ou expirado.'
+    })
   }
-};
+}

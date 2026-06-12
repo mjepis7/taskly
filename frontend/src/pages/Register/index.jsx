@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+
 import { useForm } from '../../hooks/useForm'
 
 import {
@@ -16,12 +18,14 @@ import {
 import { formatCpf } from '../../utils/formatters'
 import { errors as errorMessages } from '../../utils/errors'
 
-// 1. IMPORTAMOS O NOSSO CARTEIRO AQUI
-import api from '../../api' 
+import api from '../../api'
 
 import './styles.css'
 
 export function Register() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const navigate = useNavigate()
 
   const { formData, errors, handleChange, handleSubmit } = useForm({
@@ -35,7 +39,7 @@ export function Register() {
       cpf: {
         required: errorMessages.requiredCpf,
         mask: formatCpf,
-        validate: value => validateCpf(value.replace(/\D/g, '')),
+        validate: value => validateCpf(value.replace(/\D/g, '')), // valida só dígitos
         invalid: errorMessages.invalidCpf
       },
 
@@ -58,10 +62,11 @@ export function Register() {
       }
     },
 
-    // 2. CONECTAMOS COM O BACK-END AQUI NO "onSuccess"
     onSuccess: async (data) => {
+      setIsLoading(true)
+      setErrorMessage('')
+
       try {
-        // Envia os dados validados para a rota de registro
         await api.post('/auth/register', {
           nome: data.name,
           cpf: data.cpf,
@@ -70,14 +75,16 @@ export function Register() {
           senha: data.password
         })
 
-        // Se der certo, salva o nome e redireciona para o login
-        localStorage.setItem('userName', data.name)
-        alert('Cadastro realizado com sucesso!')
-        navigate('/login') // Mudamos para ir pro login primeiro
-        
+        navigate('/login')
       } catch (error) {
         console.error(error)
-        alert('Erro ao realizar cadastro. Tente outro e-mail ou CPF.')
+
+        setErrorMessage(
+          error.response?.data?.erro ||
+          'Erro ao realizar cadastro. Tente novamente.'
+        )
+      } finally {
+        setIsLoading(false)
       }
     }
   })
@@ -133,7 +140,17 @@ export function Register() {
           error={errors.password}
         />
 
-        <Button type="submit">Cadastrar</Button>
+        {errorMessage && (
+          <p className="register-error">{errorMessage}</p>
+        )}
+
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+        </Button>
+
+        <p className="register-redirect">
+          Já possui uma conta? <Link to="/login">Entrar</Link>
+        </p>
       </form>
     </main>
   )

@@ -5,32 +5,39 @@ require('dotenv').config();
 
 const app = express();
 
-// Middlewares globais
-app.use(cors());
+// Middlewares
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 app.use(express.json());
 
-// Rota de teste inicial
+// Rota teste
 app.get('/', (req, res) => {
-  res.json({ mensagem: "Backend do Taskly rodando com sucesso! 🚀" });
+  res.json({ mensagem: "Backend do Taskly rodando com sucesso!" });
 });
 
-// ROTAS DE AUTENTICAÇÃO (Cadastro e Login)
+// Rotas
 app.use('/api/auth', require('./routes/authRoutes'));
-
-// ROTAS DE TAREFAS (Protegidas)
 app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
 
-// Pegando a porta do .env ou usando a 3000 por padrão
+// Erro global
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ erro: 'Erro interno do servidor' });
+});
+
 const PORT = process.env.PORT || 3000;
 
-// Conectando ao MongoDB e DEPOIS ligando o servidor
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('✅ Conectado ao MongoDB Atlas com sucesso!');
+    console.log('MongoDB conectado com sucesso!');
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor rodando na porta ${PORT}`);
+      console.log(`Servidor rodando na porta ${PORT}`);
     });
   })
   .catch((erro) => {
-    console.error('❌ Erro ao conectar no MongoDB:', erro);
+    console.error('Erro ao conectar no MongoDB:', erro);
   });

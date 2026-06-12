@@ -4,16 +4,17 @@ export function Button({
   children,
   onClick,
   type = 'button',
-  disabled,
-  ...rest
+  disabled = false,
+  className = '',
+  ...props
 }) {
   return (
     <button
-      className="btn"
-      onClick={onClick}
       type={type}
+      onClick={onClick}
       disabled={disabled}
-      {...rest}
+      className={`btn ${className} ${disabled ? 'btn-disabled' : ''}`}
+      {...props}
     >
       {children}
     </button>

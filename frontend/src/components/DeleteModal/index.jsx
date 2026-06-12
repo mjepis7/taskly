@@ -8,14 +8,25 @@ export function DeleteModal({
   confirmText = 'Deletar',
   cancelText = 'Cancelar',
   onClose,
-  onConfirm
+  onConfirm,
+  loading = false
 }) {
   if (!isOpen) return null
+
+  function handleConfirm() {
+    if (loading) return
+    onConfirm?.()
+  }
 
   return (
     <div className="modal-overlay">
       <div className="delete-modal">
-        <button className="delete-close-btn" onClick={onClose}>
+
+        <button
+          className="delete-close-btn"
+          onClick={onClose}
+          disabled={loading}
+        >
           <XIcon size={20} weight="bold" />
         </button>
 
@@ -26,14 +37,23 @@ export function DeleteModal({
         <h2>{title}</h2>
 
         <div className="modal-actions">
-          <button className="btn-cancel" onClick={onClose}>
+          <button
+            className="btn-cancel"
+            onClick={onClose}
+            disabled={loading}
+          >
             {cancelText}
           </button>
 
-          <button className="btn-delete" onClick={onConfirm}>
-            {confirmText}
+          <button
+            className="btn-delete"
+            onClick={handleConfirm}
+            disabled={loading}
+          >
+            {loading ? 'Deletando...' : confirmText}
           </button>
         </div>
+
       </div>
     </div>
   )

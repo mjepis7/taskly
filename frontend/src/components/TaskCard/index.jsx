@@ -9,7 +9,7 @@ import { formatDate } from '../../utils/formatters'
 
 import './styles.css'
 
-export function TaskCard({ task, onEdit, onDelete }) {
+export function TaskCard({ task, onEdit, onDelete, isLate }) {
   function getStatusColor(status) {
     switch (status) {
       case 'Concluído':
@@ -21,20 +21,22 @@ export function TaskCard({ task, onEdit, onDelete }) {
     }
   }
 
+  const finalStatus = isLate ? 'Atrasado' : task.status
+
   return (
     <div className="task-card">
       <div className="card-top">
         <div
           className="color-dot"
           style={{
-            backgroundColor: getStatusColor(task.status)
+            backgroundColor: getStatusColor(finalStatus)
           }}
         />
 
         <div>
           <h3 className="task-title">{task.title}</h3>
 
-          <p className="task-status">{task.status}</p>
+          <p className="task-status">{finalStatus}</p>
         </div>
       </div>
 
@@ -43,23 +45,21 @@ export function TaskCard({ task, onEdit, onDelete }) {
       <div className="card-details">
         <span>
           <CalendarBlankIcon size={20} weight="bold" />
-
           {formatDate(task.date)}
         </span>
 
         <span>
           <ClockIcon size={20} weight="bold" />
-
           {task.time}
         </span>
       </div>
 
       <div className="card-actions">
-        <button onClick={() => onEdit && onEdit(task)}>
+        <button onClick={() => onEdit?.(task)}>
           <PencilSimpleIcon size={20} weight="bold" />
         </button>
 
-        <button onClick={() => onDelete && onDelete(task)}>
+        <button onClick={() => onDelete?.(task)}>
           <TrashIcon size={20} weight="bold" />
         </button>
       </div>

@@ -1,15 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const taskController = require('../controllers/taskController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const express = require('express')
+const router = express.Router()
 
-// Rotas que já temos (Criar e Listar)
-router.post('/', authMiddleware, taskController.criarTarefa);
-router.get('/', authMiddleware, taskController.listarTarefas);
+const taskController = require('../controllers/taskController')
+const authMiddleware = require('../middlewares/authMiddleware')
 
-// NOVAS ROTAS (Atualizar e Deletar)
-// O ":id" na URL serve para avisarmos ao back-end qual tarefa exata queremos mexer
-router.put('/:id', authMiddleware, taskController.atualizarTarefa);
-router.delete('/:id', authMiddleware, taskController.deletarTarefa);
+//Rotas de tarefas (todas protegidas por autenticação)
 
-module.exports = router;
+// Criar e listar tarefas
+router.post('/', authMiddleware, taskController.criarTarefa)
+router.get('/', authMiddleware, taskController.listarTarefas)
+
+// Atualizar e deletar tarefa específica
+router.put('/:id', authMiddleware, taskController.atualizarTarefa)
+router.delete('/:id', authMiddleware, taskController.deletarTarefa)
+
+module.exports = router

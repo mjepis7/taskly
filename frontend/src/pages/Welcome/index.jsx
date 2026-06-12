@@ -29,8 +29,8 @@ export function Welcome() {
       </p>
 
       <div className="buttons-container">
-        <Button onClick={() => navigate('/entrar')}>Entrar</Button>
-        <Button onClick={() => navigate('/cadastrar')}>Cadastre-se</Button>
+        <Button onClick={() => navigate('/login')}>Entrar</Button>
+        <Button onClick={() => navigate('/register')}>Cadastre-se</Button>
       </div>
     </div>
   )

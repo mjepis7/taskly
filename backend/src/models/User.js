@@ -1,21 +1,40 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-  nome: { 
-    type: String, 
-    required: true 
+  nome: {
+    type: String,
+    required: true,
+    trim: true
   },
-  email: { 
-    type: String, 
-    required: true, 
-    unique: true // Garante que não teremos dois usuários com o mesmo e-mail
-  },
-  senha: { 
-    type: String, 
-    required: true 
-  }
-}, { 
-  timestamps: true // Cria automaticamente os campos "createdAt" e "updatedAt"
-});
 
-module.exports = mongoose.model('User', UserSchema);
+  cpf: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    match: /^\d{11}$/
+  },
+
+  dataNascimento: {
+    type: Date,
+    required: true
+  },
+
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  },
+
+  senha: {
+    type: String,
+    required: true
+  }
+}, {
+  timestamps: true
+})
+
+module.exports = mongoose.model('User', UserSchema)

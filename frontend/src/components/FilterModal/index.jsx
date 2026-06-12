@@ -12,9 +12,7 @@ export function FilterModal({
 
   const options = [
     { label: 'Todos', value: null, color: '#1d2f9d' },
-    { label: 'Em andamento', value: 'Em andamento', color: '#FFB800' },
-    { label: 'Concluído', value: 'Concluído', color: '#10E196' },
-    { label: 'Atrasado', value: 'Atrasado', color: '#FF3366' }
+    ...STATUS_OPTIONS
   ]
 
   return (
@@ -32,9 +30,8 @@ export function FilterModal({
           {options.map(opt => (
             <button
               key={opt.label}
-              className={`filter-item ${
-                statusFilter === opt.value ? 'active' : ''
-              }`}
+              className={`filter-item ${statusFilter === opt.value ? 'active' : ''
+                }`}
               onClick={() => {
                 setStatusFilter(opt.value)
                 onClose()

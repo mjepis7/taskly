@@ -1,16 +1,19 @@
 import { useState } from 'react'
 
 export function useForm(config) {
-  const [formData, setFormData] = useState(() => {
-    const initial = {}
+  const buildInitialState = () => {
+    const base = { ...(config.initialValues || {}) }
 
     for (const key in config.fields) {
-      initial[key] = ''
+      if (base[key] === undefined) {
+        base[key] = ''
+      }
     }
 
-    return initial
-  })
+    return base
+  }
 
+  const [formData, setFormData] = useState(buildInitialState)
   const [errors, setErrors] = useState({})
 
   function handleChange(event) {
@@ -23,6 +26,12 @@ export function useForm(config) {
       ...prev,
       [name]: finalValue
     }))
+
+    // ✨ limpa erro enquanto o usuário corrige
+    setErrors(prev => ({
+      ...prev,
+      [name]: ''
+    }))
   }
 
   function handleSubmit(event) {
@@ -34,7 +43,12 @@ export function useForm(config) {
       const field = config.fields[key]
       const value = formData[key]
 
-      if (field.required && !value?.trim()) {
+      const isEmpty =
+        value === undefined ||
+        value === null ||
+        value === ''
+
+      if (field.required && isEmpty) {
         newErrors[key] = field.required
         continue
       }
@@ -46,11 +60,14 @@ export function useForm(config) {
 
     setErrors(newErrors)
 
-    const hasError = Object.keys(newErrors).length > 0
-
-    if (!hasError) {
+    if (Object.keys(newErrors).length === 0) {
       config.onSuccess?.(formData)
     }
+  }
+
+  function resetForm() {
+    setFormData(buildInitialState())
+    setErrors({})
   }
 
   return {
@@ -58,6 +75,8 @@ export function useForm(config) {
     errors,
     handleChange,
     handleSubmit,
-    setFormData
+    setFormData,
+    setErrors,
+    resetForm
   }
 }

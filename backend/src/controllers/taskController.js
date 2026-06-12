@@ -1,6 +1,5 @@
-const Task = require('../models/Task');
+const Task = require('../models/Task')
 
-// 1. Criar uma nova tarefa
 exports.criarTarefa = async (req, res) => {
   try {
     const novaTarefa = new Task({
@@ -8,59 +7,78 @@ exports.criarTarefa = async (req, res) => {
       desc: req.body.desc,
       date: req.body.date,
       time: req.body.time,
-      status: req.body.status,
-      usuario: req.usuario.id // Pega o ID de quem está logado
-    });
+      status: req.body.status || 'Em andamento',
+      usuario: req.usuario.id
+    })
 
-    const tarefaSalva = await novaTarefa.save();
-    res.status(201).json(tarefaSalva);
+    const tarefaSalva = await novaTarefa.save()
+    return res.status(201).json(tarefaSalva)
+
   } catch (erro) {
-    res.status(500).json({ erro: 'Erro ao criar a tarefa.' });
+    return res.status(500).json({ erro: 'Erro ao criar a tarefa.' })
   }
-};
+}
 
-// 2. Listar as tarefas do usuário logado
 exports.listarTarefas = async (req, res) => {
   try {
-    const tarefas = await Task.find({ usuario: req.usuario.id });
-    res.json(tarefas);
-  } catch (erro) {
-    res.status(500).json({ erro: 'Erro ao buscar tarefas.' });
-  }
-};
+    const tarefas = await Task.find({ usuario: req.usuario.id })
+    return res.json(tarefas)
 
-// 3. Atualizar uma tarefa (Editar texto ou mudar status)
+  } catch (erro) {
+    return res.status(500).json({ erro: 'Erro ao buscar tarefas.' })
+  }
+}
+
 exports.atualizarTarefa = async (req, res) => {
   try {
-    let tarefa = await Task.findById(req.params.id);
+    const tarefa = await Task.findById(req.params.id)
 
-    if (!tarefa) return res.status(404).json({ erro: 'Tarefa não encontrada.' });
-
-    if (tarefa.usuario.toString() !== req.usuario.id) {
-      return res.status(401).json({ erro: 'Não autorizado a alterar esta tarefa.' });
+    if (!tarefa) {
+      return res.status(404).json({ erro: 'Tarefa não encontrada.' })
     }
 
-    tarefa = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(tarefa);
-  } catch (erro) {
-    res.status(500).json({ erro: 'Erro ao atualizar a tarefa.' });
-  }
-};
+    if (tarefa.usuario.toString() !== req.usuario.id) {
+      return res.status(401).json({ erro: 'Não autorizado.' })
+    }
 
-// 4. Deletar uma tarefa
+    const { title, desc, date, time, status } = req.body
+
+    const updated = await Task.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        desc,
+        date,
+        time,
+        status
+      },
+      { new: true }
+    )
+
+    return res.json(updated)
+
+  } catch (erro) {
+    return res.status(500).json({ erro: 'Erro ao atualizar a tarefa.' })
+  }
+}
+
 exports.deletarTarefa = async (req, res) => {
   try {
-    let tarefa = await Task.findById(req.params.id);
+    const tarefa = await Task.findById(req.params.id)
 
-    if (!tarefa) return res.status(404).json({ erro: 'Tarefa não encontrada.' });
-
-    if (tarefa.usuario.toString() !== req.usuario.id) {
-      return res.status(401).json({ erro: 'Não autorizado a deletar esta tarefa.' });
+    if (!tarefa) {
+      return res.status(404).json({ erro: 'Tarefa não encontrada.' })
     }
 
-    await Task.findByIdAndDelete(req.params.id);
-    res.json({ mensagem: 'Tarefa removida com sucesso!' });
+    if (tarefa.usuario.toString() !== req.usuario.id) {
+      return res.status(401).json({ erro: 'Não autorizado.' })
+    }
+
+    await Task.findByIdAndDelete(req.params.id)
+
+    return res.json({ mensagem: 'Tarefa removida com sucesso!' })
+
   } catch (erro) {
-    res.status(500).json({ erro: 'Erro ao deletar a tarefa.' });
+    return res.status(500).json({ erro: 'Erro ao deletar a tarefa.' })
   }
-};
+}

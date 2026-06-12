@@ -7,88 +7,88 @@ import { MobileMenu } from '../../components/MobileMenu'
 import { Header } from '../../components/Header'
 
 import { useForm } from '../../hooks/useForm'
+import { TASK_STATUS, STATUS_OPTIONS } from '../../utils/status'
 
-// 1. IMPORTAMOS O NOSSO CARTEIRO AQUI
 import api from '../../api'
 
 import './styles.css'
-
-const statusOptions = [
-  { label: 'Em andamento', color: '#FFB800' },
-  { label: 'Concluído', color: '#10E196' },
-  { label: 'Atrasado', color: '#FF3366' }
-]
+import { useState } from 'react'
 
 export function NewTask() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const navigate = useNavigate()
 
-  // 1. BUSCAMOS O NOME SALVO NO NAVEGADOR AQUI
   const nomeUsuario = localStorage.getItem('userName') || 'Usuário'
 
-  const { formData, errors, handleChange, handleSubmit, setFormData } = useForm(
-    {
-      initialValues: {
-        title: '',
-        description: '',
-        date: '',
-        time: '',
-        status: 'Em andamento'
+  const { formData, errors, handleChange, handleSubmit, setFormData } = useForm({
+    initialValues: {
+      title: '',
+      description: '',
+      date: '',
+      time: '',
+      status: TASK_STATUS.DOING
+    },
+
+    fields: {
+      title: {
+        required: 'Digite o nome da tarefa'
       },
+      description: {
+        required: 'Digite uma descrição'
+      },
+      date: {
+        required: 'Selecione uma data'
+      },
+      time: {
+        required: 'Selecione um horário'
+      }
+    },
 
-      fields: {
-        title: {
-          required: 'Digite o nome da tarefa'
-        },
+    onSuccess: async (data) => {
+      setIsLoading(true)
+      setErrorMessage('')
 
-        description: {
-          required: 'Digite uma descrição'
-        },
+      try {
+        const token = localStorage.getItem('token')
 
-        date: {
-          required: 'Selecione uma data'
-        },
-
-        time: {
-          required: 'Selecione um horário'
+        if (!token) {
+          setErrorMessage('Usuário não autenticado.')
+          return
         }
-      },
 
-      // 2. CONECTAMOS COM O BACK-END AQUI NO "onSuccess"
-      onSuccess: async (data) => {
-        try {
-          // Pegamos o Token de segurança do usuário logado
-          const token = localStorage.getItem('token')
-
-          // Enviamos a tarefa para o Banco de Dados
-          await api.post('/tasks', {
+        await api.post(
+          '/tasks',
+          {
             title: data.title,
-            desc: data.description, // O Back-end espera 'desc' e o form envia 'description'
+            desc: data.description,
             date: data.date,
             time: data.time,
             status: data.status
-          }, {
-            // Mandamos a "Pulseira VIP" no cabeçalho da requisição
+          },
+          {
             headers: { Authorization: `Bearer ${token}` }
-          })
+          }
+        )
 
-          // Se deu tudo certo, redireciona para a lista de tarefas
-          navigate('/tarefas')
-          
-        } catch (error) {
-          console.error(error)
-          alert('Erro ao salvar a tarefa no banco de dados.')
-        }
+        navigate('/tasks')
+      } catch (error) {
+        console.error(error)
+        setErrorMessage('Erro ao salvar a tarefa no banco de dados.')
+      } finally {
+        setIsLoading(false)
       }
     }
-  )
+  })
 
   return (
     <div className="new-task-container">
       <div className="new-task-content">
         <Header
-          userName={nomeUsuario} // 2. NOME DINÂMICO APLICADO AQUI
-          buttonTo="/tarefas"
-          buttonText="Minhas tarefas"
+          userName={nomeUsuario}
+          buttonTo="/tasks"
+          buttonText="📋 Minhas tarefas"
         />
 
         <main className="new-task-main">
@@ -98,6 +98,10 @@ export function NewTask() {
           </div>
 
           <form className="new-task-form" onSubmit={handleSubmit}>
+            {errorMessage && (
+              <p className="error-message">{errorMessage}</p>
+            )}
+
             <Input
               name="title"
               label="Nome da tarefa"
@@ -153,14 +157,14 @@ export function NewTask() {
 
             <div className="colors-section">
               <label>Status da tarefa</label>
+
               <div className="color-options">
-                {statusOptions.map(item => (
+                {STATUS_OPTIONS.map(item => (
                   <button
                     key={item.label}
                     type="button"
-                    className={`color-dot ${
-                      formData.status === item.label ? 'selected' : ''
-                    }`}
+                    className={`color-dot ${formData.status === item.label ? 'selected' : ''
+                      }`}
                     style={{ backgroundColor: item.color }}
                     onClick={() =>
                       setFormData(prev => ({
@@ -174,7 +178,9 @@ export function NewTask() {
               </div>
             </div>
 
-            <Button type="submit">Criar tarefa</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Criando tarefa...' : 'Criar tarefa'}
+            </Button>
           </form>
         </main>
       </div>

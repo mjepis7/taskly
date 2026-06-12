@@ -26,7 +26,6 @@
 }
 
 .error-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: red;
+  color: #ff4d4f;
+  font-size: 0.875rem;
 }

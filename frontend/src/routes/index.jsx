@@ -10,11 +10,11 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Welcome />} />
-      <Route path="/entrar" element={<Login />} />
-      <Route path="/cadastrar" element={<Register />} />
-      <Route path="/tarefas" element={<Tasks />} />
-      <Route path="/perfil" element={<Profile />} />
-      <Route path="/novatarefa" element={<NewTask />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/tasks" element={<Tasks />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/new-task" element={<NewTask />} />
     </Routes>
   )
 }

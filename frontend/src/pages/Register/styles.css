@@ -46,3 +46,18 @@
   max-width: 100%;
   word-break: break-word;
 }
+
+.register-redirect {
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.register-redirect a {
+  color: #10e196;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-redirect a:hover {
+  text-decoration: underline;
+}

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import api from '../api' // Nosso carteiro
+import api from '../api'
 
 export function useTasks() {
-  // 1. As tarefas agora começam vazias, e não mais do localStorage
   const [tasks, setTasks] = useState([])
 
   const [selectedTask, setSelectedTask] = useState(null)
@@ -13,22 +12,24 @@ export function useTasks() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
-  // 2. Função para buscar as tarefas do Back-end
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
+
   async function loadTasks() {
+    setErrorMessage('')
+    setIsLoading(true)
+
     try {
-      const token = localStorage.getItem('token')
-      
-      const response = await api.get('/tasks', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      
+      const response = await api.get('/tasks')
       setTasks(response.data)
     } catch (error) {
-      console.error("Erro ao buscar tarefas:", error)
+      console.error('Erro ao buscar tarefas:', error)
+      setErrorMessage('Erro ao buscar tarefas.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  // 3. O useEffect faz o loadTasks rodar sozinho assim que a tela abre
   useEffect(() => {
     loadTasks()
   }, [])
@@ -55,74 +56,94 @@ export function useTasks() {
     setIsDeleteOpen(true)
   }
 
-  // 4. Salvar a edição no Banco de Dados
-  async function confirmEdit() {
-    if (!selectedTask) return
+  async function confirmEdit(updatedTask) {
+    if (!updatedTask) return
+
+    setErrorMessage('')
 
     try {
-      const token = localStorage.getItem('token')
-      // O MongoDB usa '_id', mas o front pode usar 'id'. Isso garante que funcione nos dois.
-      const taskId = selectedTask._id || selectedTask.id 
+      const taskId = updatedTask._id || updatedTask.id
 
-      await api.put(`/tasks/${taskId}`, selectedTask, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const payload = {
+        title: updatedTask.title,
+        desc: updatedTask.desc,
+        date: updatedTask.date,
+        time: updatedTask.time,
+        status: updatedTask.status
+      }
 
-      // Atualiza a tela sem precisar recarregar a página
-      const updated = tasks.map(task =>
-        (task._id || task.id) === taskId ? selectedTask : task
+      await api.put(`/tasks/${taskId}`, payload)
+
+      setTasks(prev =>
+        prev.map(task =>
+          (task._id || task.id) === taskId
+            ? { ...task, ...payload }
+            : task
+        )
       )
 
-      setTasks(updated)
       setIsEditOpen(false)
       setSelectedTask(null)
     } catch (error) {
       console.error(error)
-      alert('Erro ao editar a tarefa.')
+      setErrorMessage(
+        error.response?.data?.erro || 'Erro ao editar a tarefa.'
+      )
     }
   }
 
-  // 5. Deletar do Banco de Dados
   async function confirmDelete() {
     if (!selectedTask) return
 
+    setErrorMessage('')
+
     try {
-      const token = localStorage.getItem('token')
       const taskId = selectedTask._id || selectedTask.id
 
-      await api.delete(`/tasks/${taskId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.delete(`/tasks/${taskId}`)
 
-      // Remove a tarefa da tela
-      const updated = tasks.filter(task => (task._id || task.id) !== taskId)
+      setTasks(prev =>
+        prev.filter(task => (task._id || task.id) !== taskId)
+      )
 
-      setTasks(updated)
       setIsDeleteOpen(false)
       setSelectedTask(null)
     } catch (error) {
       console.error(error)
-      alert('Erro ao deletar a tarefa.')
+      setErrorMessage(
+        error.response?.data?.erro || 'Erro ao deletar a tarefa.'
+      )
     }
   }
 
   return {
     tasks,
     filteredTasks,
+
+    isLoading,
+    errorMessage,
+
     search,
     setSearch,
+
     statusFilter,
     setStatusFilter,
+
     selectedTask,
     setSelectedTask,
+
     isEditOpen,
     setIsEditOpen,
+
     isDeleteOpen,
     setIsDeleteOpen,
+
     isFilterOpen,
     setIsFilterOpen,
+
     handleEdit,
     handleDelete,
+
     confirmEdit,
     confirmDelete
   }
