@@ -5,27 +5,38 @@ import {
   CaretDownIcon
 } from '@phosphor-icons/react'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { STATUS_OPTIONS } from '../../utils/status'
+import { EDITABLE_STATUS_OPTIONS, TASK_STATUS } from '../../utils/status'
 
 import './styles.css'
 
-export function EditTaskModal({ isOpen, onClose, onConfirm, task }) {
-  const [form, setForm] = useState(null)
+// Normaliza a task para edição:
+// - Date ISO -> formato do input type="date"
+// - status sempre um valor editável (nunca o derivado "Atrasado")
+function buildForm(task) {
+  if (!task) return null
 
-  // Sempre que abrir o modal, copia a task original
-  useEffect(() => {
-    if (task) {
-      setForm({
-        ...task,
-        // converte Date ISO para formato aceito pelo input type="date"
-        date: task.date?.includes('T')
-          ? task.date.split('T')[0]
-          : task.date
-      })
-    }
-  }, [task])
+  return {
+    ...task,
+    status: task.status === TASK_STATUS.LATE ? TASK_STATUS.DOING : task.status,
+    date: task.date?.includes('T')
+      ? task.date.split('T')[0]
+      : task.date
+  }
+}
+
+export function EditTaskModal({ isOpen, onClose, onConfirm, task }) {
+  const [form, setForm] = useState(() => buildForm(task))
+
+  // Reset durante a renderização sempre que a task selecionada muda
+  const taskId = task?._id || task?.id || null
+  const [prevTaskId, setPrevTaskId] = useState(taskId)
+
+  if (taskId !== prevTaskId) {
+    setPrevTaskId(taskId)
+    setForm(buildForm(task))
+  }
 
   if (!isOpen || !form) return null
 
@@ -77,7 +88,7 @@ export function EditTaskModal({ isOpen, onClose, onConfirm, task }) {
               value={form.status}
               onChange={e => handleChange('status', e.target.value)}
             >
-              {STATUS_OPTIONS.map(option => (
+              {EDITABLE_STATUS_OPTIONS.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

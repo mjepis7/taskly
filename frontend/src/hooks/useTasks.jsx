@@ -1,5 +1,23 @@
 import { useState, useEffect } from 'react'
 import api from '../api'
+import { TASK_STATUS } from '../utils/status'
+
+// Calcula o status efetivo da tarefa: marca como "Atrasado" quando a
+// data/hora já passou e a tarefa ainda não foi concluída.
+function getEffectiveStatus(task) {
+  if (task.status === TASK_STATUS.DONE) return task.status
+
+  if (task.date && task.time) {
+    const day = task.date.split('T')[0]
+    const taskDateTime = new Date(`${day}T${task.time}`)
+
+    if (!isNaN(taskDateTime) && taskDateTime < new Date()) {
+      return TASK_STATUS.LATE
+    }
+  }
+
+  return task.status
+}
 
 export function useTasks() {
   const [tasks, setTasks] = useState([])
@@ -15,36 +33,54 @@ export function useTasks() {
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
 
-  async function loadTasks() {
-    setErrorMessage('')
-    setIsLoading(true)
-
-    try {
-      const response = await api.get('/tasks')
-      setTasks(response.data)
-    } catch (error) {
-      console.error('Erro ao buscar tarefas:', error)
-      setErrorMessage('Erro ao buscar tarefas.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+  // Busca as tarefas na montagem. As chamadas de setState acontecem apenas
+  // nos callbacks das promises (assíncronos), evitando renders em cascata.
   useEffect(() => {
-    loadTasks()
+    let active = true
+
+    api.get('/tasks')
+      .then(response => {
+        if (active) setTasks(response.data)
+      })
+      .catch(error => {
+        console.error('Erro ao buscar tarefas:', error)
+        if (active) setErrorMessage('Erro ao buscar tarefas.')
+      })
+      .finally(() => {
+        if (active) setIsLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
   }, [])
 
-  const filteredTasks = tasks.filter(task => {
-    const searchText = search.toLowerCase().trim()
+  // Expõe o status efetivo ("Atrasado") em um campo separado (displayStatus),
+  // SEM sobrescrever o status real — assim a edição nunca grava o valor
+  // derivado no banco. Busca, filtro e exibição usam o displayStatus.
+  const tasksWithStatus = tasks.map(task => ({
+    ...task,
+    displayStatus: getEffectiveStatus(task)
+  }))
 
-    const matchSearch =
-      task.title?.toLowerCase().includes(searchText) ||
-      task.desc?.toLowerCase().includes(searchText)
+  const filteredTasks = tasksWithStatus
+    .filter(task => {
+      const searchText = search.toLowerCase().trim()
 
-    const matchStatus = !statusFilter || task.status === statusFilter
+      const matchSearch =
+        task.title?.toLowerCase().includes(searchText) ||
+        task.desc?.toLowerCase().includes(searchText)
 
-    return matchSearch && matchStatus
-  })
+      const matchStatus = !statusFilter || task.displayStatus === statusFilter
+
+      return matchSearch && matchStatus
+    })
+    // Tarefas concluídas vão para o final da lista
+    .sort((a, b) => {
+      const doneA = a.displayStatus === TASK_STATUS.DONE ? 1 : 0
+      const doneB = b.displayStatus === TASK_STATUS.DONE ? 1 : 0
+      return doneA - doneB
+    })
 
   function handleEdit(task) {
     setSelectedTask(task)

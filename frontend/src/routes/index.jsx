@@ -5,16 +5,41 @@ import { Register } from '../pages/Register'
 import { Tasks } from '../pages/Tasks'
 import { Profile } from '../pages/Profile'
 import { NewTask } from '../pages/NewTask'
+import { ProtectedRoute } from './ProtectedRoute'
 
 export function AppRoutes() {
   return (
     <Routes>
+      {/* Rotas públicas */}
       <Route path="/" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/tasks" element={<Tasks />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/new-task" element={<NewTask />} />
+
+      {/* Rotas protegidas (exigem login) */}
+      <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <Tasks />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/new-task"
+        element={
+          <ProtectedRoute>
+            <NewTask />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   )
 }

@@ -1,7 +1,6 @@
 # Taskly 📋
 
-Um aplicativo de gerenciamento de tarefas com **frontend em React + backend em Node.js (Express + MongoDB)**. O sistema permite criar, editar, filtrar e gerenciar tarefas com autenticação de usuários (JWT).
-
+Um aplicativo de gerenciamento de tarefas com **frontend em React + backend em Node.js (Express + MongoDB)**. O sistema permite cadastrar-se, fazer login, e criar, editar, filtrar e gerenciar tarefas, tudo com autenticação de usuários via JWT.
 
 Desenvolvido durante o programa trainee da ICMC Jr. 🚀
 
@@ -13,24 +12,27 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figm
 
 - Frontend completo
 - Backend completo
-- Autenticação funcionando
+- Autenticação (JWT) funcionando
 - CRUD de tarefas funcionando
+- Rotas protegidas no frontend
 
 ## Funcionalidades 🧩
 
 ### Autenticação 🔐
-- Cadastro de usuário
+- Cadastro de usuário (nome, CPF, data de nascimento, e-mail e senha)
 - Login com JWT
 - Atualização de perfil
 - Exclusão de conta
+- Rotas privadas: páginas internas exigem login e a sessão expira automaticamente quando o token é inválido
 
 ### Tarefas 📋
-- Criar tarefas
-- Editar tarefas
-- Deletar tarefas
-- Listar tarefas do usuário logado
+- Criar, editar e deletar tarefas
+- Listar apenas as tarefas do usuário logado
+- Busca por título/descrição
 - Filtro por status (Em andamento, Concluído, Atrasado)
-- Busca por texto
+- Status **"Atrasado" calculado automaticamente** quando a data/hora da tarefa vence (não é gravado no banco — é derivado da data)
+- Tarefas concluídas aparecem com o texto riscado e são movidas para o final da lista
+- Interface responsiva (desktop e mobile)
 
 ## Tecnologias utilizadas ⚙️
 
@@ -51,74 +53,67 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figm
 - CORS
 - dotenv
 
-
 ## Estrutura do projeto 📁
 
 ```bash
-frontend/
-backend/
-docs/
+taskly/
+├── frontend/   # Aplicação React + Vite
+├── backend/    # API REST com Express + MongoDB
+└── docs/       # Documentação técnica
 ```
+
+> Cada pasta (`frontend/` e `backend/`) possui seu próprio README com detalhes específicos.
 
 ## Como rodar o projeto localmente 💻
 
-Pré-requisitos: Node.js instalado e MongoDB Atlas ou local.
+Pré-requisitos: **Node.js** instalado e **MongoDB** (local ou via Atlas).
 
 ### 1. Clonar o repositório
 ```bash
-$ git clone https://github.com/mjepis7/taskly.git
+git clone https://github.com/mjepis7/taskly.git
 ```
 
 ### Backend
 
-#### 2. Entrar na pasta backend
 ```bash
+# entrar na pasta backend
 cd backend
-```
 
-#### 3. Instalar dependências
-```bash
+# instalar dependências
 npm install
 ```
 
-#### 4. Criar arquivo .env
-Crie um arquivo .env dentro da pasta backend/
+Crie um arquivo `.env` dentro de `backend/` (use o `.env.example` como base):
+
 ```bash
-MONGO_URI=sua_chave_aqui
-JWT_SECRET=seu_segredo_seguro_aqui
+MONGO_URI=sua_string_de_conexao_mongodb
+JWT_SECRET=seu_segredo_super_secreto
 PORT=3000
 ```
 
-#### 5. Rodar servidor
 ```bash
+# rodar em produção
 npm start
-```
 
-#### Backend roda em:
-```bash
-http://localhost:3000
-```
-
-### Frontend
-
-#### 6. Entrar na pasta frontend
-```bash
-cd ../frontend
-```
-
-#### 7. Instalar dependências
-```bash
-npm install
-```
-
-#### 8. Rodar o projeto
-```bash
+# ou em desenvolvimento (com reload automático)
 npm run dev
 ```
 
-#### Frontend roda em:
+O backend roda em `http://localhost:3000`.
+
+### Frontend
+
 ```bash
-http://localhost:5173
+# em outro terminal, entrar na pasta frontend
+cd frontend
+
+# instalar dependências
+npm install
+
+# iniciar ambiente de desenvolvimento
+npm run dev
 ```
 
+O frontend roda em `http://localhost:5173` e consome a API em `http://localhost:3000/api`.
 
+> ⚠️ O frontend precisa do backend rodando. A URL base da API fica em `frontend/src/api.js`.

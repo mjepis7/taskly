@@ -13,7 +13,6 @@ import './styles.css'
 
 export function Tasks() {
   const {
-    tasks,
     filteredTasks,
 
     isLoading,
@@ -45,14 +44,6 @@ export function Tasks() {
 
   const nomeUsuario = localStorage.getItem('userName') || 'Usuário'
 
-  // 👇 apenas visual (NÃO interfere no status real)
-  function isLate(task) {
-    if (!task.date || !task.time) return false
-
-    const taskDateTime = new Date(`${task.date}T${task.time}`)
-    return taskDateTime < new Date()
-  }
-
   if (isLoading) {
     return (
       <div className="task-web-container">
@@ -61,7 +52,6 @@ export function Tasks() {
     )
   }
 
-  const listToRender = filteredTasks.length > 0 ? filteredTasks : tasks
   const isFiltering = Boolean(search || statusFilter)
 
   return (
@@ -99,16 +89,11 @@ export function Tasks() {
         </section>
 
         <main className="tasks-grid">
-          {listToRender.length > 0 ? (
-            listToRender.map(task => (
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map(task => (
               <TaskCard
                 key={task._id || task.id}
-                task={{
-                  ...task,
-                  status: isLate(task) && task.status !== 'Concluído'
-                    ? 'Atrasado'
-                    : task.status
-                }}
+                task={task}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />

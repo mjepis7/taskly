@@ -1,4 +1,6 @@
-import { X } from '@phosphor-icons/react'
+import { XIcon } from '@phosphor-icons/react'
+
+import { STATUS_OPTIONS } from '../../utils/status'
 
 import './styles.css'
 
@@ -22,7 +24,7 @@ export function FilterModal({
           <h2>Filtrar tarefas</h2>
 
           <button onClick={onClose}>
-            <X size={22} />
+            <XIcon size={22} />
           </button>
         </div>
 

@@ -97,7 +97,7 @@ export function Profile() {
       localStorage.removeItem('userName')
 
       navigate('/', { replace: true })
-    } catch (error) {
+    } catch {
       setError('Erro ao deletar conta.')
     } finally {
       setLoadingDelete(false)
@@ -156,6 +156,7 @@ export function Profile() {
       <DeleteModal
         isOpen={isModalOpen}
         title="Deseja mesmo deletar sua conta?"
+        loading={loadingDelete}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleDeleteAccount}
       />

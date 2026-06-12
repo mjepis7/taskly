@@ -7,7 +7,7 @@ import { MobileMenu } from '../../components/MobileMenu'
 import { Header } from '../../components/Header'
 
 import { useForm } from '../../hooks/useForm'
-import { TASK_STATUS, STATUS_OPTIONS } from '../../utils/status'
+import { TASK_STATUS, EDITABLE_STATUS_OPTIONS } from '../../utils/status'
 
 import api from '../../api'
 
@@ -51,26 +51,14 @@ export function NewTask() {
       setErrorMessage('')
 
       try {
-        const token = localStorage.getItem('token')
-
-        if (!token) {
-          setErrorMessage('Usuário não autenticado.')
-          return
-        }
-
-        await api.post(
-          '/tasks',
-          {
-            title: data.title,
-            desc: data.description,
-            date: data.date,
-            time: data.time,
-            status: data.status
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        )
+        // O token é adicionado automaticamente pelo interceptor em api.js
+        await api.post('/tasks', {
+          title: data.title,
+          desc: data.description,
+          date: data.date,
+          time: data.time,
+          status: data.status
+        })
 
         navigate('/tasks')
       } catch (error) {
@@ -159,7 +147,7 @@ export function NewTask() {
               <label>Status da tarefa</label>
 
               <div className="color-options">
-                {STATUS_OPTIONS.map(item => (
+                {EDITABLE_STATUS_OPTIONS.map(item => (
                   <button
                     key={item.label}
                     type="button"
