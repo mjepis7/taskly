@@ -24,7 +24,7 @@ exports.registrar = async (req, res) => {
     const novoUsuario = new User({
       nome,
       cpf: cpfLimpo,
-      dataNascimento: dataNascimento ? new Date(dataNascimento) : null,
+      dataNascimento: new Date(dataNascimento),
       email,
       senha: senhaCriptografada
     })
@@ -38,8 +38,12 @@ exports.registrar = async (req, res) => {
   } catch (erro) {
     console.error('ERRO REGISTRO:', erro)
 
+    if (erro.code === 11000) {
+      return res.status(400).json({ erro: 'E-mail ou CPF já cadastrado.' })
+    }
+
     return res.status(500).json({
-      erro: erro.message
+      erro: 'Erro ao cadastrar usuário.'
     })
   }
 }

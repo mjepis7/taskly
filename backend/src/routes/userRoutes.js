@@ -25,14 +25,16 @@ router.put('/me', authMiddleware, async (req, res) => {
 
     const { nome, cpf, dataNascimento, email } = req.body
 
+    // Monta apenas os campos enviados, normalizando o CPF (remove máscara)
+    const dadosAtualizados = {}
+    if (nome !== undefined) dadosAtualizados.nome = nome
+    if (email !== undefined) dadosAtualizados.email = email
+    if (dataNascimento !== undefined) dadosAtualizados.dataNascimento = dataNascimento
+    if (cpf !== undefined) dadosAtualizados.cpf = cpf.replace(/\D/g, '')
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      {
-        nome,
-        cpf,
-        dataNascimento,
-        email
-      },
+      dadosAtualizados,
       {
         new: true,
         runValidators: true
@@ -46,6 +48,12 @@ router.put('/me', authMiddleware, async (req, res) => {
     return res.json(updatedUser)
   } catch (error) {
     console.error(error)
+
+    // Conflito de índice único (e-mail ou CPF já em uso)
+    if (error.code === 11000) {
+      return res.status(400).json({ erro: 'E-mail ou CPF já cadastrado.' })
+    }
+
     return res.status(500).json({ erro: 'Erro ao atualizar usuário' })
   }
 })
